@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:define name="conteudo">
+
+	<center>
+		<h1>Locação de Carros</h1>
+
+		<h:form>
+			<h:messages style="color:red" />
+			<h:panelGrid id="panelForm"  columns="3">
+
+				<h:outputLabel value="Modelo do Carro: " />
+				<h:inputText value="#{locacaoController.modelo}" />
+
+				<h:commandButton value="Pesquisar"
+					actionListener="#{locacaoController.pesquisar}" >
+					<f:ajax execute="panelForm" render="@all" />
+				</h:commandButton>	
+				
+			</h:panelGrid>
+
+			
+			<h:dataTable value="#{locacaoController.listacarros}" var="obj">
+				<h:column>
+					<f:facet name="header">Modelo</f:facet>
+					<h:outputLabel value="#{obj.modelo}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Preço</f:facet>
+					<h:outputLabel value="#{obj.preco}">
+						<f:convertNumber  locale="pt_BR" currencySymbol="R$" type="currency"/>
+					</h:outputLabel>
+				</h:column>
+
+				
+			</h:dataTable>
+			
+		</h:form>
+	</center>
+</ui:define>
+</ui:composition>	
+	
+</html>
