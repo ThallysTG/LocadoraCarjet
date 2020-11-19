@@ -1,6 +1,10 @@
 package br.carjet.locadora.application;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.InputMismatchException;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -14,6 +18,31 @@ import javax.faces.context.FacesContext;
 import com.sun.faces.component.visit.FullVisitContext;
 
 public class Util {
+	
+	public static String hashSHA256(String valor) {
+		return DigestUtils.sha256Hex(valor);
+	}
+	
+	public static String encrypt(String value) {
+		try {
+
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			byte[] bytes = messageDigest.digest(value.getBytes());
+
+			StringBuilder stringBuilder = new StringBuilder();
+			for (byte b : bytes) {
+				stringBuilder.append(String.format("%02X", 0xFF & b));
+			}
+
+			return stringBuilder.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	
 	public static void addErrorMessage(String msg) {
 		addMessage(null, FacesMessage.SEVERITY_ERROR, msg);

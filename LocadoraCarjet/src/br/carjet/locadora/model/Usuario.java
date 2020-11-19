@@ -14,7 +14,8 @@ public class Usuario implements Cloneable {
 	private Integer id;
 	private String nome;
 	private String cpf;
-	
+	@NotBlank(message = "O login deve ser informado.")
+	private String login;
 	@NotBlank(message = "O email não pode ser nulo.")
 	private String email;
 	private LocalDate dataNascimento;
@@ -25,6 +26,8 @@ public class Usuario implements Cloneable {
 	private Sexo sexo;
 	private Perfil perfil;
 	private String cidade;
+	private TipoUsuario tipoUsuario;
+	
 
 	public Integer getId() {
 		return id;
@@ -131,6 +134,21 @@ public class Usuario implements Cloneable {
 		}
 		return null;
 	}
-	
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
 
 }

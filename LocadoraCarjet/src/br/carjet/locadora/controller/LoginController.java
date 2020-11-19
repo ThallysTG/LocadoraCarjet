@@ -4,14 +4,17 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.inject.Named;
 
+import br.carjet.locadora.application.Session;
 import br.carjet.locadora.application.Util;
+import br.carjet.locadora.dao.UsuarioDAO;
+import br.carjet.locadora.model.Usuario;
 
 @Named
 @RequestScoped
 public class LoginController  {
 
 //	@NotBlank(message = "O usuario não pode ser nulo.")
-	private String usuario;
+	private Usuario usuario;
 	
 //	@Size(min = 6, max = 10, message = "A senha deve conter no mínimo 6 dígitos e maximo 10.")
 //	@NotBlank(message = "A senha não pode ser nula.")
@@ -19,54 +22,32 @@ public class LoginController  {
 	
 //	private UIComponent usuarioUIComponent;
 
-	public void entrar() {
-
-		if (getUsuario().isBlank()) {
-			Util.addErrorMessage("O campo usuario nao pode ser nulo. 2");
-			return;
-		}
+	public String logar() {
+		UsuarioDAO dao = new UsuarioDAO();
+		Usuario usuario = dao.verificarLoginSenha(getUsuario().getLogin(),
+				Util.hashSHA256(getUsuario().getSenha()));
 		
-		if (getUsuario().equals("janio") && 
-				getSenha().equals("123")) {
-			Util.redirect("usuario.xhtml");
+		if (usuario != null) {
+			// adicionando um ussuario na sessao
+			Session.getInstance().setAttribute("usuarioLogado", usuario);
+			// redirecionando para o template
+			return "template.xhtml?faces-redirect=true";
 		}
-		UIComponent component = Util.findComponent("itUsuario");
-		Util.addErrorMessage(component.getClientId(),
-				"O usuário não existe.");
-				
-//		System.out.println("Cliente Id: ".concat(getUsuarioUIComponent().getClientId()));
-//		Util.addErrorMessage(getUsuarioUIComponent().getClientId(),
-//							"O usuário não existe.");
-	}
-	
-	public void validarLogin(String idComponent) {
-		UIComponent comp = Util.findComponent(idComponent);
-		
-		if (!usuario.equals("janio")) {
-			Util.addErrorMessage(comp.getClientId(), "Usuário inválido.");
-		}
+		Util.addErrorMessage("Login ou Senha inválido.");
+		return "";
 	}
 	
 	public void limpar() {
-		System.out.println("Limpar");
-		usuario = "blah";
-		senha = "";
+		usuario = null;
 	}
-
-	public String getUsuario() {
+	public Usuario getUsuario() {
+		if (usuario == null)
+			usuario = new Usuario();
 		return usuario;
 	}
 
-	public void setUsuario(String usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 	
