@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.carjet.locadora.model.Carro;
+
 public interface DAO<T> {
 	public void inserir(T obj) throws Exception;
 	public void alterar(T obj) throws Exception;

@@ -13,7 +13,7 @@
 <h:body>
 	 <div class="wrapper">
 	 	<div class="box navbar header">
-			<h1 >.: Locadora CarJet :.</h1>
+			<h1 >.: Locação :.</h1>
 			<div >
 				<h:form rendered="#{templateController.usuarioLogado != null}"> 
 					<h:outputLabel value="Olá #{templateController.usuarioLogado.nome}"/>
@@ -29,10 +29,10 @@
 				<h:form>
 					<h:commandLink value="Login" action="login.xhtml?faces-redirect=true"/> <br/>
 					<h:commandLink value="Cadastro de Usuário" action="usuario.xhtml?faces-redirect=true"/> <br/>
-					<h:commandLink value="Cadastro de Carros" /> <br/>
-					<h:commandLink value="Aluguel"/> <br/>
+					<h:commandLink value="Cadastro de Carros" action="consultacarros.xhtml?faces-redirect=true"/> <br/>
+					<h:commandLink value="Vendas"/> <br/>
 					<h:commandLink value="Carrinho" /> <br/>
-					<h:commandLink value="Histórico de Aluguel" /> <br/>
+					<h:commandLink value="Histórico de Venda" /> <br/>
 						
 				</h:form>
 			</ui:insert>

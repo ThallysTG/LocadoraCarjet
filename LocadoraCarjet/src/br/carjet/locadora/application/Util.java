@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.InputMismatchException;
+
 import org.apache.commons.codec.digest.DigestUtils;
+
+import com.sun.faces.component.visit.FullVisitContext;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -15,7 +18,6 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
-import com.sun.faces.component.visit.FullVisitContext;
 
 public class Util {
 	
