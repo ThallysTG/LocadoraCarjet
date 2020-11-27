@@ -45,7 +45,7 @@ public class ConsultaCarrosController implements Serializable {
 			editarCarro = dao.obterUm(carro);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Util.addErrorMessage("Não foi possível encontrar a midia no banco de dados.");
+			Util.addErrorMessage("Não foi possível encontrar o carro no banco de dados.");
 			return;
 		}
 		
