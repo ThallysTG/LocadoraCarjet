@@ -1,13 +1,13 @@
 package br.carjet.locadora.model;
 
-public enum TipoCarro {
+public enum TipoCarros {
 	SEDAN(1, "Sedan"), 
 	DATCH(2, "Hatch");
 	
 	private int id;
 	private String label;
 	
-	TipoCarro(int id, String label) {
+	TipoCarros(int id, String label) {
 		this.id = id;
 		this.label = label;
 	}
@@ -20,8 +20,8 @@ public enum TipoCarro {
 		return label;
 	}
 	
-	public static TipoCarro valueOf(int id) {
-		for (TipoCarro tipo : values()) {
+	public static TipoCarros valueOf(int id) {
+		for (TipoCarros tipo : values()) {
 			if (id == tipo.getId())
 				return tipo;
 		}

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<ui:composition template="../template.xhtml">
+<ui:define name="conteudo">
+<center>
+	<h:messages 
+		errorStyle="color:red" 
+		warnStyle="color:orange" 
+		infoStyle="color:green"
+		globalOnly="false"/>
+		
+	<h1>.:Cadastro de Carros:.</h1>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Modelo:" />
+			<h:panelGroup>
+				<h:inputText 
+					id="itModelo" 
+					value="#{carrosController.entity.modelo}" />
+				<h:message for="itModelo" style="color:red"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Categoria:" />			
+			<h:panelGroup>
+				<h:inputText 
+					id="itCategoria" 
+					value="#{carrosController.entity.categoria}" />
+				<h:message for="itCategoria" style="color:red"/>
+			</h:panelGroup>
+
+			<h:outputLabel value="Preço:" />
+			<h:panelGroup>
+				<h:inputText 
+					id="itPreco" 
+					value="#{carrosController.entity.preco}" />
+				<h:message for="itPreco" style="color:red"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Estoque:" />			
+			<h:panelGroup>
+				<h:inputText 
+					id="itEstoque" 
+					value="#{carrosController.entity.estoque}" />
+				<h:message for="itEstoque" style="color:red"/>
+			</h:panelGroup>									
+
+		
+		</h:panelGrid>
+		<h:commandButton value="Incluir"
+			disabled="#{carrosController.entity.id != null}"
+			actionListener="#{carrosController.incluir}" />
+		<h:commandButton value="Alterar"
+			disabled="#{carrosController.entity.id == null}"
+			actionListener="#{carrosController.alterar}" />
+		<h:commandButton value="Excluir"
+			disabled="#{carrosController.entity.id == null}"
+			actionListener="#{carrosController.remover}" >
+			<f:ajax execute="@this" render="@form formDataTable"/>
+		</h:commandButton>
+		<h:commandButton value="Limpar" 
+			actionListener="#{carrosController.limpar}">
+			<f:ajax execute="@this" render="@form"/>
+		</h:commandButton>		
+	</h:form>
+			</center>
+</ui:define>
+</ui:composition>
+</html>

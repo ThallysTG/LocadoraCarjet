@@ -10,56 +10,53 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.carjet.locadora.application.Util;
-import br.carjet.locadora.dao.CarroDAO;
-import br.carjet.locadora.model.Carro;
+import br.carjet.locadora.dao.CarrosDAO;
+import br.carjet.locadora.model.Carros;
 
 @Named
 @ViewScoped
-public class ConsultaCarrosController implements Serializable {
-
-	private static final long serialVersionUID = -7064857362220414218L;
-
-	private Integer tipoFiltro;
-	private String filtro;
-	private List<Carro> listaCarro;
+public class ConsultaCarrosController implements Serializable{
 	
-	public void novoCarro() {
-		Util.redirect("carros.xhtml");
-	}
+	private static final long serialVersionUID = 5971844866316069324L;
+	
+	private int tipoFiltro = 1;
+	private String filtro;
+	private List<Carros> listaCarros;
 	
 	public void pesquisar() {
-		CarroDAO dao = new CarroDAO();
-		try {
-			setListaCarro(dao.obterListaCarro(tipoFiltro, filtro));
-		} catch (Exception e) {
-			e.printStackTrace();
-			setListaCarro(null);
-		}
+		CarrosDAO dao = new CarrosDAO();
+		if (tipoFiltro == 1)
+			listaCarros = dao.findByModelo(getFiltro());
+		else 
+			listaCarros = dao.findByCategoria(getFiltro());
 	}
-
-
-	public void editar(Carro carro) {
-		CarroDAO dao = new CarroDAO();
-		Carro editarCarro = null;
-		try {
-			editarCarro = dao.obterUm(carro);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Util.addErrorMessage("Não foi possível encontrar o carro no banco de dados.");
-			return;
-		}
+	
+	public void novoCarros() {
+		Util.redirect("../pages/cadastrarcarros.xhtml");
+	}
+	
+	public String editar(Carros carros) {
+		CarrosDAO dao = new CarrosDAO();
+		carros = dao.findById(carros.getId());
 		
-		Flash flash =  FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		flash.put("carroFlash", editarCarro);
-		novoCarro();
+		Flash flash = FacesContext.getCurrentInstance().
+						getExternalContext().getFlash();
+		
+		flash.put("flashCarros", carros);
+		return "../pages/cadastrarcarros.xhtml?faces-redirect=true";
+	}
+	
+	public void excluir(int id) {
+		CarrosDAO dao = new CarrosDAO();
+		dao.delete(id);
+		listaCarros = null;
 	}
 
-	public Integer getTipoFiltro() {
-		return tipoFiltro;
-	}
-
-	public void setTipoFiltro(Integer tipoFiltro) {
-		this.tipoFiltro = tipoFiltro;
+	public List<Carros> getListaCarros() {
+		if (listaCarros == null) {
+			listaCarros = new ArrayList<Carros>();
+		}
+		return listaCarros;
 	}
 
 	public String getFiltro() {
@@ -70,14 +67,12 @@ public class ConsultaCarrosController implements Serializable {
 		this.filtro = filtro;
 	}
 
-	public List<Carro> getListaCarro() {
-		if (listaCarro == null)
-			listaCarro = new ArrayList<Carro>();
-		return listaCarro;
+	public int getTipoFiltro() {
+		return tipoFiltro;
 	}
 
-	public void setListaCarro(List<Carro> listaCarro) {
-		this.listaCarro = listaCarro;
+	public void setTipoFiltro(int tipoFiltro) {
+		this.tipoFiltro = tipoFiltro;
 	}
 
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<ui:composition template="../template.xhtml">
+<ui:define name="conteudo">
+<center>
+	<h:messages 
+		errorStyle="color:red" 
+		warnStyle="color:orange" 
+		infoStyle="color:green"
+		globalOnly="false"/>
+		
+	<h1>Consulta de Carros</h1>
+	<h:form>
+		<h:panelGrid columns="4">
+			<h:selectOneMenu value="#{consultaCarrosController.tipoFiltro}">
+			   <f:selectItem itemValue="1" itemLabel="Modelo" />
+			   <f:selectItem itemValue="2" itemLabel="Categoria" />                   
+			</h:selectOneMenu>
+			<h:panelGroup>
+				<h:inputText 
+					value="#{consultaCarrosController.filtro}" />
+			</h:panelGroup>
+			<h:commandButton value="Pesquisar"
+				actionListener="#{consultaCarrosController.pesquisar}" />
+			<h:commandButton value="+ Novo Jogo"
+				action="#{consultaCarrosController.novoCarros}" />
+		
+		</h:panelGrid>
+			
+	</h:form>
+	<h:form id="formDataTable">
+		<h:dataTable id="dataTable" value="#{consultaCarrosController.listaCarros}" 
+					 var="obj" style="margin-top:60px;" class="table table-striped table-bordered">
+<h:column>
+						<f:facet name="header">Modelo do Carro</f:facet>
+						<h:commandLink value="#{obj.modelo}">
+							<f:ajax execute="@this" render="@form" />
+						</h:commandLink>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Categoria</f:facet>
+						<h:commandLink value="#{obj.categoria}"/>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Preço</f:facet>
+						<h:commandLink value="#{obj.preco}"/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Ações</f:facet>
+						<h:commandButton value="Editar"
+							actionListener="#{consultaCarrosController.editar(obj.id)}"
+							class="btn btn-warning" />
+						<h:commandButton value="Excluir"
+							
+							actionListener="#{consultaCarrosController.excluir(obj.id)}"
+							class="btn btn-danger">
+							<f:ajax execute="panelForm" render="@all" />
+						</h:commandButton>
+					</h:column>	   
+		</h:dataTable>
+	</h:form>
+		</center>
+</ui:define>	
+</ui:composition>
+</html>

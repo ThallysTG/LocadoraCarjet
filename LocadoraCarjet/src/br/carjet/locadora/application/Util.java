@@ -5,21 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.InputMismatchException;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.sun.faces.component.visit.FullVisitContext;
-
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class Util {
+	
+	private Util() {
+		// para nao permitir uma instancia
+	}
 	
 	public static String hashSHA256(String valor) {
 		return DigestUtils.sha256Hex(valor);
@@ -27,10 +22,11 @@ public class Util {
 	
 	public static String encrypt(String value) {
 		try {
-
+			// Classe usilizada para gerar a criptografia em hash
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 			byte[] bytes = messageDigest.digest(value.getBytes());
 
+			// convertendo um array de bytes em hexadecimal
 			StringBuilder stringBuilder = new StringBuilder();
 			for (byte b : bytes) {
 				stringBuilder.append(String.format("%02X", 0xFF & b));
@@ -45,56 +41,98 @@ public class Util {
 		return null;
 	}
 
-	
-	public static void addErrorMessage(String msg) {
-		addMessage(null, FacesMessage.SEVERITY_ERROR, msg);
-	}
-	
-	public static void addErrorMessage(String clientId, String msg) {
-		addMessage(clientId, FacesMessage.SEVERITY_ERROR, msg);
-	}
 
-	public static void addInfoMessage(String msg) {
-		addMessage(null, FacesMessage.SEVERITY_INFO, msg);
+
+	public static void addErrorMessage(String message) {
+		FacesContext.getCurrentInstance()
+			.addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
 	}
 	
-	public static void addInfoWarnMessage(String msg) {
-		addMessage(null, FacesMessage.SEVERITY_WARN, msg);
+	public static void addWarningMessage(String message) {
+		FacesContext.getCurrentInstance()
+			.addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_WARN, message, null));
 	}
 	
-	private static void addMessage(String clientId, Severity severity, String msg) {
-		FacesContext.getCurrentInstance().
-		addMessage(clientId, new FacesMessage(severity, msg, null));
+	public static void addInfoMessage(String message) {
+		FacesContext.getCurrentInstance()
+			.addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
 	}
 	
-	public static void redirect(String page) {
+	public static void redirect(String url) {
 		try {
-			FacesContext.getCurrentInstance()
-				.getExternalContext().redirect(page);
+			FacesContext.getCurrentInstance().getExternalContext().redirect(url);
 		} catch (IOException e) {
+			addErrorMessage("Erro ao redirecionar a pagina.");
 			e.printStackTrace();
-			addErrorMessage("Problemas ao redirecionar a página.");
 		}
 	}
 	
-	public static UIComponent findComponent(final String id) {
-	    FacesContext context = FacesContext.getCurrentInstance(); 
-	    UIViewRoot root = context.getViewRoot();
-	    final UIComponent[] found = new UIComponent[1];
+	public static boolean cpfValido(String cpf) {
 
-	    root.visitTree(new FullVisitContext(context), new VisitCallback() {     
-	        @Override
-	        public VisitResult visit(VisitContext context, UIComponent component) {
-	            if (component != null 
-	                && component.getId() != null 
-	                && component.getId().equals(id)) {
-	                found[0] = component;
-	                return VisitResult.COMPLETE;
-	            }
-	            return VisitResult.ACCEPT;              
-	        }
-	    });
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
 
-	    return found[0];
-	}	
+		// considera-se erro CPF's formados por uma sequencia de numeros iguais
+		if (cpf.equals("00000000000") || cpf.equals("11111111111") || cpf.equals("22222222222")
+				|| cpf.equals("33333333333") || cpf.equals("44444444444") || cpf.equals("55555555555")
+				|| cpf.equals("66666666666") || cpf.equals("77777777777") || cpf.equals("88888888888")
+				|| cpf.equals("99999999999") || (cpf.length() != 11))
+			return (false);
+
+		char dig10, dig11;
+		int sm, i, r, num, peso;
+
+		// "try" - protege o codigo para eventuais erros de conversao de tipo (int)
+		try {
+			// Calculo do 1o. Digito Verificador
+			sm = 0;
+			peso = 10;
+			for (i = 0; i < 9; i++) {
+				// converte o i-esimo caractere do CPF em um numero:
+				// por exemplo, transforma o caractere '0' no inteiro 0
+				// (48 eh a posicao de '0' na tabela ASCII)
+				num = (int) (cpf.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso - 1;
+			}
+
+			r = 11 - (sm % 11);
+			if ((r == 10) || (r == 11))
+				dig10 = '0';
+			else
+				dig10 = (char) (r + 48); // converte no respectivo caractere numerico
+
+			// Calculo do 2o. Digito Verificador
+			sm = 0;
+			peso = 11;
+			for (i = 0; i < 10; i++) {
+				num = (int) (cpf.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso - 1;
+			}
+
+			r = 11 - (sm % 11);
+			if ((r == 10) || (r == 11))
+				dig11 = '0';
+			else
+				dig11 = (char) (r + 48);
+
+			// Verifica se os digitos calculados conferem com os digitos informados.
+			if ((dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10)))
+				return (true);
+			else
+				return (false);
+		} catch (InputMismatchException erro) {
+			return (false);
+		}
+	}
+
+	public static String imprimeCPF(String CPF) {
+		return (CPF.substring(0, 3) + "." + CPF.substring(3, 6) + "." + CPF.substring(6, 9) + "-"
+				+ CPF.substring(9, 11));
+	}
+	
 }

@@ -1,88 +1,73 @@
 package br.carjet.locadora.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 import br.carjet.locadora.application.Util;
 import br.carjet.locadora.dao.DAO;
+import br.carjet.locadora.model.Entity;
 
-public abstract class Controller<T> {
+public abstract class Controller <T extends Entity<T>> implements Serializable {
 
-	protected T entity;
-	private DAO<T> dao = null;
-	private List<T> listaEntity;
+	private static final long serialVersionUID = -2022582742025295921L;
+	
+	protected T entity = null;
+	protected DAO<T> dao = null;
 	
 	public Controller(DAO<T> dao) {
 		super();
 		this.dao = dao;
 	}
+	
+	public abstract T getEntity();
+	
+	public void setEntity(T entity) {
+		this.entity = entity;
+	}
 
 	public void incluir() {
-		try {
-			dao.inserir(getEntity());
-			Util.addInfoMessage("Inclusão realizada com sucesso.");
-			limpar();
-		} catch (Exception e) {
-			Util.addErrorMessage("Não é possivel fazer uma inclusão.");
-			e.printStackTrace();
-		}
-	}
-	
-	public void alterar() {
-		try {
-			dao.alterar(getEntity());
-			Util.addInfoMessage("Alteração realizada com sucesso.");
-			limpar();
-		} catch (Exception e) {
-			Util.addErrorMessage("Não é possivel fazer uma alteração.");
-			e.printStackTrace();
-		}
-	}
-
-	public void excluir() {
-		excluir(getEntity());
-	}
-
-	public void excluir(T entity) {
-		try {
-			dao.excluir(entity);
-			Util.addInfoMessage("Exclusão realizada com sucesso.");
-			limpar();
-		} catch (Exception e) {
-			Util.addErrorMessage("Não é possivel fazer uma exclusão.");
-			e.printStackTrace();
-		}
-	}
-	
-	public void editar(T entity) {
-		try {
-			setEntity(dao.obterUm(entity));
-		} catch (Exception e) {
-			Util.addErrorMessage("Problema ao editar.");
-			e.printStackTrace();
-		}
-	}
-	
-	public List<T> getListaEntity() {
-		if (listaEntity == null) {
-			try {
-				listaEntity = dao.obterTodos();
-			} catch (Exception e) {
-				e.printStackTrace();
-				listaEntity = new ArrayList<T>();
+		if (validarDados()) {
+			if (dao.create(getEntity())) {
+				limpar();
+				Util.addInfoMessage("Inclusão realizada com sucesso.");
+			} else {
+				Util.addInfoMessage("Erro ao incluir no banco de dados.");
 			}
-		}	
-		return listaEntity;
+		}
+		
+	}
+
+	public void alterar() {
+		if (validarDados()) {		
+			if (dao.update(getEntity())) {
+				limpar();
+				Util.addInfoMessage("Alteração realizada com sucesso.");
+			} else {
+				Util.addInfoMessage("Erro ao alterar no banco de dados.");
+			}
+		}
+	}
+
+	public void remover() {
+		if (dao.delete(getEntity().getId())) {
+			limpar();
+			Util.addInfoMessage("Remoção realizada com sucesso.");
+		} else {
+			Util.addInfoMessage("Erro ao remover no banco de dados.");
+		}
+	}
+
+	public void editar(T entity) {
+		entity = dao.findById(entity.getId());
+		setEntity(entity);
+	}
+	
+	public boolean validarDados() {
+		return true;
 	}
 	
 	public void limpar() {
 		entity = null;
-		listaEntity = null;
 	}
+	
 
-	public abstract T getEntity();
-
-	public void setEntity(T entity) {
-		this.entity = entity;
-	}
 }
