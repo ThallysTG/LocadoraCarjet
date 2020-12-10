@@ -18,6 +18,7 @@
 			<div >
 				<h:form>
 					<h:outputLabel value="Usuário: #{templateController.usuarioLogado.nome}"
+						class="black"
 						rendered="#{templateController.usuarioLogado != null}"/>
 						<h:commandLink value="Inicio"   
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/template.xhtml')}"

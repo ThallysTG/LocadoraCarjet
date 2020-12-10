@@ -21,6 +21,10 @@ body {
 	grid-area: content;
 }
 
+.black {
+	color: #000000;
+}
+
 .centered {
     margin: 0px auto;
 }
