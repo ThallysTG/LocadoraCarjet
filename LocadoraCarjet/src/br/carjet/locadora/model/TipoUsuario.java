@@ -6,12 +6,12 @@ import java.util.List;
 public enum TipoUsuario {
 	
 	CLIENTE(1, "Cliente",
-			Arrays.asList("login.xhtml", "template.xhtml", "aluguelcarros.xhtml", "detalhesaluguel.xhtml", "carrinho.xhtml",
+			Arrays.asList("login.xhtml", "template.xhtml", "locacaocarros.xhtml", "detalheslocacao.xhtml", "carrinho.xhtml",
 					"historico.xhtml", "cadastrocliente.xhtml")),
 	FUNCIONARIO(2, "Funcionario",
-			Arrays.asList("carrinho.xhtml", "aluguelcarros.xhtml", "cadastrarcarros.xhtml", "cadastrousuario.xhtml",
-					"consultausuario.xhtml", "detalhesaluguel.xhtml", "historico.xhtml", "login.xhtml", "signup.xhtml",
-					"template.xhtml", "consultajogos.xhtml"));
+			Arrays.asList("carrinho.xhtml", "locacaocarros.xhtml", "cadastrarcarros.xhtml", "cadastrousuario.xhtml",
+					"consultacarros.xhtml", "detalheslocacao.xhtml", "historico.xhtml", "login.xhtml", "signup.xhtml",
+					"template.xhtml"));
 	
 	private int id;
 	private String label;

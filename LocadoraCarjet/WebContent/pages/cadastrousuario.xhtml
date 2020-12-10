@@ -15,6 +15,7 @@
 		
 	<h1>Cadastro de Usuário</h1>
 	<h:form>
+
 		<h:panelGrid columns="2">
 			<h:outputLabel value="Nome:" />
 			<h:panelGroup>
@@ -77,7 +78,8 @@
 		<h:commandButton value="Limpar" 
 			actionListener="#{usuarioController.limpar}">
 			<f:ajax execute="@this" render="@form"/>
-		</h:commandButton>		
+		</h:commandButton>	
+
 	</h:form>
 	<h:form id="formDataTable">
 		<h:dataTable id="dataTable" value="#{usuarioController.listaUsuario}" 

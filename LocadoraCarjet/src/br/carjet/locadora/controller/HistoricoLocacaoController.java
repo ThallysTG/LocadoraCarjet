@@ -42,7 +42,7 @@ public class HistoricoLocacaoController implements Serializable {
 	public void detalhes(Locacao locacao) {
 		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 		flash.put("locacaoFlash", locacao);
-		Util.redirect("/LojaJogos/faces/pages/detalheslocacao.xhtml");
+		Util.redirect("/LocadoraCarjet/faces/pages/detalheslocacao.xhtml");
 	}
 	
 }

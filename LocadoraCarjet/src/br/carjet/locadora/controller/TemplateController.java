@@ -1,14 +1,21 @@
 package br.carjet.locadora.controller;
 
+import java.io.Serializable;
 import java.util.List;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import br.carjet.locadora.application.Session;
 import br.carjet.locadora.application.Util;
 import br.carjet.locadora.model.Usuario;
 import br.carjet.locadora.model.ItemLocacao;
 
-public class TemplateController {
+@Named
+@ViewScoped
+public class TemplateController implements Serializable {
 
+	private static final long serialVersionUID = -5921506654129141307L;
 
 	Usuario usuarioLogado = null;
 

@@ -16,11 +16,7 @@ public class LoginController  {
 //	@NotBlank(message = "O usuario não pode ser nulo.")
 	private Usuario usuario;
 	
-//	@Size(min = 6, max = 10, message = "A senha deve conter no mínimo 6 dígitos e maximo 10.")
-//	@NotBlank(message = "A senha não pode ser nula.")
-	private String senha;
-	
-//	private UIComponent usuarioUIComponent;
+
 
 	public String logar() {
 		UsuarioDAO dao = new UsuarioDAO();
@@ -49,6 +45,11 @@ public class LoginController  {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
+	public void fazerCadastro() {
+		Util.redirect("cadastrocliente.xhtml");
+	}
+
 
 	
 }

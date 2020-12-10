@@ -26,7 +26,7 @@
 			</h:panelGroup>
 			<h:commandButton value="Pesquisar"
 				actionListener="#{consultaCarrosController.pesquisar}" />
-			<h:commandButton value="+ Novo Jogo"
+			<h:commandButton value="+ Novo Carro"
 				action="#{consultaCarrosController.novoCarros}" />
 		
 		</h:panelGrid>
@@ -46,20 +46,29 @@
 						<f:facet name="header">Categoria</f:facet>
 						<h:commandLink value="#{obj.categoria}"/>
 					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Disponível</f:facet>
+						<h:commandLink value="#{obj.estoque}"/>
+					</h:column>
 
 					<h:column>
-						<f:facet name="header">Preço</f:facet>
+						<f:facet name="header">Preço/Dia</f:facet>
 						<h:commandLink value="#{obj.preco}"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Ações</f:facet>
 						<h:commandButton value="Editar"
 							actionListener="#{consultaCarrosController.editar(obj.id)}"
-							class="btn btn-warning" />
+							class="btn btn-warning"
+							style="margin-right: 5px; 
+						margin-left: 5px;" />
 						<h:commandButton value="Excluir"
 							
 							actionListener="#{consultaCarrosController.excluir(obj.id)}"
-							class="btn btn-danger">
+							class="btn btn-danger"
+							style="margin-right: 5px; 
+						margin-left: 5px;">
 							<f:ajax execute="panelForm" render="@all" />
 						</h:commandButton>
 					</h:column>	   

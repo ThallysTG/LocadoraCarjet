@@ -13,39 +13,53 @@
 <h:body>
 	 <div class="wrapper">
 	 	<div class="box navbar header">
-			<h1 >Locacao de Carros</h1>
+
+			<h:graphicImage library="imgs" name="Logos.png"/>
 			<div >
 				<h:form>
-					<h:outputLabel value="Olá #{templateController.usuarioLogado.nome}"
+					<h:outputLabel value="Usuário: #{templateController.usuarioLogado.nome}"
 						rendered="#{templateController.usuarioLogado != null}"/>
-					<h:commandLink value=" (Sair)"   
+						<h:commandLink value="Inicio"   
+						action="#{templateController.redirecionar('/LocadoraCarjet/faces/template.xhtml')}"
+						class="btn btn-warning"
+						style="margin-right: 5px; 
+						margin-left: 5px;" />
+					<h:commandLink value="Sair"   
 						action="#{templateController.encerrarSessao}"
 						rendered="#{templateController.usuarioLogado != null}"
-						style="color:white"/>
+						class="btn btn-warning"
+						style="margin-right: 5px; 
+						margin-left: 5px;" />
 				</h:form>
 			</div>
 	 	</div>
 		<div class="box sidebar" style="text-align: center;">
 			<ui:insert name="menu">
-				<h1>Menu</h1>
+				<h2>Menu</h2>
 				<h:form>
 					<h:commandLink value="Login" 
 						disabled="#{templateController.usuarioLogado != null}"
+						class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/login.xhtml')}" /> <br/>
 					<h:commandLink value="Consulta de Usuarios" 
 						disabled="#{templateController.usuarioLogado.tipoUsuario.id == 1}"
+						class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/pages/cadastrousuario.xhtml')}" /> <br/>
-					<h:commandLink value="Consulta de Jogos" 
+					<h:commandLink value="Consulta de Carros" 
 						disabled="#{templateController.usuarioLogado.tipoUsuario.id == 1}"
+						class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/pages/consultacarros.xhtml')}" /> <br/> 
-					<h:commandLink value="Locacao Carros"
+					<h:commandLink value="Locacao de Carros"
+						class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/pages/locacaocarros.xhtml')}" />
 					<br />
 					<h:commandLink
 						value="Carrinho (#{templateController.qtdItensCarrinho})"
+						class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/pages/carrinho.xhtml')}" />
 					<br />
 					<h:commandLink value="Histórico de Locacao" 
+					class="btn btn-outline-info mesmo-tamanho"
 						action="#{templateController.redirecionar('/LocadoraCarjet/faces/pages/historico.xhtml')}" />
 					 <br/>
 						
@@ -56,7 +70,8 @@
 			<br />
 			<ui:insert name="conteudo">
 				<center>
-					<h:outputLabel value="Seja Bem-vindo #{templateController.usuarioLogado.nome}" />
+					
+					<h:graphicImage library="imgs" name="carros2.png"/>
 				</center>
 			</ui:insert>
 		</div>

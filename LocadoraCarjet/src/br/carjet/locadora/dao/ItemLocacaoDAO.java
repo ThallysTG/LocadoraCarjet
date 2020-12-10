@@ -21,7 +21,7 @@ public class ItemLocacaoDAO extends DAO<ItemLocacao> {
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO public.itemLocacao ");
-		sql.append("	(valor, idvenda, idcarros) ");
+		sql.append("	(valor, idlocacao, idcarros) ");
 		sql.append("VALUES ");
 		sql.append("	(?, ?, ?) ");
 		
@@ -49,7 +49,7 @@ public class ItemLocacaoDAO extends DAO<ItemLocacao> {
 		
 	}
 
-	public List<ItemLocacao> findByLocacao(Locacao venda) {
+	public List<ItemLocacao> findByLocacao(Locacao locacao) {
 		List<ItemLocacao> listaItemLocacao = new ArrayList<ItemLocacao>();
 		Connection conn = getConnection();
 		
@@ -63,16 +63,16 @@ public class ItemLocacaoDAO extends DAO<ItemLocacao> {
 		sql.append("  l.preco, ");
 		sql.append("  l.estoque ");
 		sql.append("FROM ");
-		sql.append("  public.itemvenda v, ");
+		sql.append("  public.itemlocacao v, ");
 		sql.append("  public.carros l ");
 		sql.append("WHERE ");
 		sql.append("  v.idcarros = l.id AND ");
-		sql.append("  v.idvenda = ? ");
+		sql.append("  v.idlocacao = ? ");
 		
 		PreparedStatement stat = null;
 		try {
 			stat = conn.prepareStatement(sql.toString());
-			stat.setInt(1, venda.getId());
+			stat.setInt(1, locacao.getId());
 			
 			ResultSet rs = stat.executeQuery();
 			
@@ -90,7 +90,7 @@ public class ItemLocacaoDAO extends DAO<ItemLocacao> {
 				
 				item.setCarros(carros);
 				
-				item.setLocacao(venda);
+				item.setLocacao(locacao);
 				
 				listaItemLocacao.add(item);
 			}

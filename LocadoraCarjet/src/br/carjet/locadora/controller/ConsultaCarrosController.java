@@ -46,6 +46,7 @@ public class ConsultaCarrosController implements Serializable{
 		return "../pages/cadastrarcarros.xhtml?faces-redirect=true";
 	}
 	
+	
 	public void excluir(int id) {
 		CarrosDAO dao = new CarrosDAO();
 		dao.delete(id);
